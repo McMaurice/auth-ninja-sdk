@@ -81,7 +81,6 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
               // Email login/signup form
               EmailLoginForm(
                 mode: mode == AuthMode.login ? FormMode.login : FormMode.signup,
-                customFields: widget.config.signupCustomFields,
                 emailHint: widget.config.emailHint,
                 passwordHint: widget.config.passwordHint,
                 buttonText: mode == AuthMode.login

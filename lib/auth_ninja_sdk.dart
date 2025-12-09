@@ -1,5 +1,7 @@
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+library auth_ninja_sdk;
+
+// Export public APIs
+export 'src/presentation/auth_ninja_screen.dart';
+export 'src/core/auth_ninja_config.dart';
+export 'src/presentation/widgets/email_password_form.dart';
+

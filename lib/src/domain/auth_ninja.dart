@@ -2,26 +2,18 @@ import 'package:auth_ninja_sdk/src/core/auth_ninja_state.dart';
 import 'package:auth_ninja_sdk/src/domain/auth_ninja_repo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-/// Main entry point for AuthNinja SDK
+/// Main entry point for AuthNinja SDK.
 /// 
-/// Use this class to interact with authentication features.
-/// Can be used with or without the default UI components.
+/// Use this class to access authentication functions.
+/// Works with default UI or your own custom UI.
 /// 
-/// Example usage:
-/// ```dart
-/// // Initialize (typically in main.dart)
-/// final authManager = AuthNinjaManager.instance;
+/// Example:
+/// final ninja = AuthNinja.instance;
+/// final state = await ninja.signInWithEmail('a@b.com','pass');
 /// 
-/// // Sign in programmatically
-/// await authManager.signInWithEmail('user@example.com', 'password');
-/// 
-/// // Listen to auth state
-/// authManager.authStateChanges.listen((state) {
-///   if (state is Authenticated) {
-///     print('User signed in: ${state.user.email}');
-///   }
-/// });
-/// ```
+/// Listen to auth state:
+/// ninja.authStateChanges.listen((s){});
+
 class AuthNinja {
   static AuthNinja? _instance;
   final AuthNinjaRepository _repository;

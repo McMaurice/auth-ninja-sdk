@@ -1,8 +1,7 @@
-// SDK Configuration
-export 'src/config/auth_config.dart';
+library auth_ninja_sdk;
 
-// Utilities
-export 'src/utilities/auth_logger.dart';
+// Export public APIs
+export 'src/presentation/auth_ninja_screen.dart';
+export 'src/core/auth_ninja_config.dart';
+export 'src/presentation/widgets/email_password_form.dart';
 
-// Domain / Public API
-export 'src/domain/auth_ninja.dart';

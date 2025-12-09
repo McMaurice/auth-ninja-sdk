@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/utils/helper/validators.dart';
-import '../../core/auth_config.dart';
+import '../../core/auth_ninja_config.dart';
 
 enum FormMode { login, signup }
 
@@ -16,7 +16,7 @@ class EmailLoginForm extends StatefulWidget {
 
   // Layout
   final EdgeInsets padding;
-  final double spacing; // vertical spacing between elements
+  final double spacing; 
 
   // Field styles
   final double fieldBorderRadius;

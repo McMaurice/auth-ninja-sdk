@@ -2,16 +2,16 @@ import 'package:auth_ninja_sdk/src/presentation/widgets/email_password_form.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'widgets/social_login_section.dart';
-import '../core/auth_config.dart';
+import '../core/auth_ninja_config.dart';
 
 enum AuthMode { login, signup }
 
-class AuthScreen extends ConsumerStatefulWidget {
+class AuthNinjaScreen extends ConsumerStatefulWidget {
   final AuthConfig config;
   final AuthMode initialMode;
   final double logoheight;
 
-  const AuthScreen({
+  const AuthNinjaScreen({
     super.key,
     this.logoheight = 100,
     required this.config,
@@ -19,10 +19,10 @@ class AuthScreen extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<AuthScreen> createState() => _AuthScreenState();
+  ConsumerState<AuthNinjaScreen> createState() => _AuthScreenState();
 }
 
-class _AuthScreenState extends ConsumerState<AuthScreen> {
+class _AuthScreenState extends ConsumerState<AuthNinjaScreen> {
   late AuthMode mode;
 
   @override
@@ -81,6 +81,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
               // Email login/signup form
               EmailLoginForm(
                 mode: mode == AuthMode.login ? FormMode.login : FormMode.signup,
+                customFields: widget.config.signupCustomFields,
                 emailHint: widget.config.emailHint,
                 passwordHint: widget.config.passwordHint,
                 buttonText: mode == AuthMode.login
@@ -104,6 +105,8 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                 appleCircular: true,
                 showGoogle: widget.config.enableGoogleAuth,
                 showApple: widget.config.enableAppleAuth,
+                googleBackground: Colors.white,
+                applebackground: Colors.white,
               ),
           
               const SizedBox(height: 16),

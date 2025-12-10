@@ -51,6 +51,27 @@ class AuthState {
   factory AuthState.loading() {
     return const AuthState(status: AuthNinjaStatus.loading);
   }
+ 
+  
+ 
+  factory AuthState.error(String errorMessage) {
+    return AuthState(
+      status: AuthNinjaStatus.unauthenticated,
+      errorMessage: errorMessage,
+    );
+  }
+  
+  
+  bool get isLoading => status == AuthNinjaStatus.loading;
+
+  bool get isAuthenticated => status == AuthNinjaStatus.authenticated;
+
+  bool get isTokenExpired => status == AuthNinjaStatus.tokenExpired;
+
+  bool get isUnauthenticated => status == AuthNinjaStatus.unauthenticated;
+  
+  bool get hasError => errorMessage != null && errorMessage!.isNotEmpty;
+
 
   AuthState copyWith({
     AuthNinjaStatus? status,

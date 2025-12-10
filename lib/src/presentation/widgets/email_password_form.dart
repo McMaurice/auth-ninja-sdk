@@ -1,4 +1,3 @@
-// email_password_form.dart
 import 'package:auth_ninja_sdk/src/core/utils/helper/validators.dart';
 import 'package:flutter/material.dart';
 import 'ninja_input_field.dart';
@@ -12,6 +11,7 @@ class EmailPasswordForm extends StatefulWidget {
   final double fieldBorderRadius;
   final String? emailHint;
   final String? passwordHint;
+  final bool isLoading;
   
   const EmailPasswordForm({
     super.key,
@@ -22,7 +22,7 @@ class EmailPasswordForm extends StatefulWidget {
     this.buttonBorderRadius = 40,
     this.fieldBorderRadius = 40,
     this.emailHint,
-    this.passwordHint,
+    this.passwordHint, required this.isLoading,
   });
   
   @override
@@ -35,8 +35,7 @@ class _EmailPasswordFormState extends State<EmailPasswordForm> {
   final TextEditingController _passwordController = TextEditingController();
   
   bool _obscurePassword = true;
-  bool _isLoading = false;
-  String? _errorMessage;
+  String? errorMessage;
   
   @override
   void didUpdateWidget(covariant EmailPasswordForm oldWidget) {
@@ -53,7 +52,7 @@ class _EmailPasswordFormState extends State<EmailPasswordForm> {
     _emailController.clear();
     _passwordController.clear();
     setState(() {
-      _errorMessage = null;
+      errorMessage = null;
       _obscurePassword = true;
     });
   }
@@ -62,8 +61,7 @@ class _EmailPasswordFormState extends State<EmailPasswordForm> {
     if (!_formKey.currentState!.validate()) return;
     
     setState(() {
-      _isLoading = true;
-      _errorMessage = null;
+      errorMessage = null;
     });
     
     try {
@@ -73,15 +71,11 @@ class _EmailPasswordFormState extends State<EmailPasswordForm> {
       );
     } catch (e) {
       setState(() {
-        _errorMessage = widget.isLoginMode
+        errorMessage = widget.isLoginMode
             ? 'Incorrect email or password'
             : 'Could not create account. Please try again.';
       });
-    } finally {
-      if (mounted) {
-        setState(() => _isLoading = false);
-      }
-    }
+    } 
   }
   
   @override
@@ -147,7 +141,7 @@ class _EmailPasswordFormState extends State<EmailPasswordForm> {
           
           // Submit Button
           ElevatedButton(
-            onPressed: _isLoading ? null : _submit,
+            onPressed: widget.isLoading? null : _submit,
             style: ElevatedButton.styleFrom(
               backgroundColor: widget.buttonColor,
               elevation: 0,
@@ -156,7 +150,7 @@ class _EmailPasswordFormState extends State<EmailPasswordForm> {
                 borderRadius: BorderRadius.circular(widget.buttonBorderRadius),
               ),
             ),
-            child: _isLoading
+            child: widget.isLoading
                 ? const SizedBox(
                     height: 24,
                     width: 24,

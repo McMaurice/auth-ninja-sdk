@@ -7,6 +7,7 @@ class SocialLoginSection extends StatelessWidget {
   final Color? applebackground;
   final VoidCallback? onGooglePressed;
   final VoidCallback? onApplePressed;
+  final bool? isLoading;
 
   const SocialLoginSection({
     super.key,
@@ -14,6 +15,7 @@ class SocialLoginSection extends StatelessWidget {
     this.onApplePressed,
     this.googleBackground,
     this.applebackground,
+    this.isLoading = false,
   });
 
   @override
@@ -22,7 +24,8 @@ class SocialLoginSection extends StatelessWidget {
 
     return Column(children: [
       GoogleLoginButton(
-        onPressed: onGooglePressed,
+        onPressed:onGooglePressed,
+       
       ),
       SizedBox(height: 10),
       AppleLoginButton(

@@ -56,12 +56,13 @@ class GoogleLoginButton extends ConsumerWidget {
             ? EdgeInsets.zero
             : const EdgeInsets.symmetric(vertical: 14),
         fixedSize: isCircular ? Size(size, size) : null,
+        elevation: 0,
         shape: isCircular
             ? const CircleBorder()
             : RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(borderRadius),
               ),
-        side: const BorderSide(color: Colors.grey, width: 1),
+        side: const BorderSide(color: Color.fromARGB(255, 226, 225, 225), width: 1),
       ),
       child: isCircular
           ? SvgPicture.asset(

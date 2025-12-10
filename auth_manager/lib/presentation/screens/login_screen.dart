@@ -1,4 +1,5 @@
 import 'package:auth_manager/presentation/screens/home_screen.dart';
+import 'package:auth_manager/presentation/screens/set_up.dart';
 import 'package:auth_ninja_sdk/auth_ninja_sdk.dart';
 import 'package:flutter/material.dart';
 
@@ -20,30 +21,28 @@ class LoginScreen extends StatelessWidget {
         logoAssetPath: 'assets/defaultimage.png',
         logoheight: 200,
         logowidth: 100,
-        // More customizations
       ),
 
-      onLoginSubmit: () {
+      onEmailLoginSuccess: () {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (_) => const HomeScreen()),
+          MaterialPageRoute(builder: (ctx) => const HomeScreen()),
         );
       },
 
-      onSignupSubmit: () {
+      onEmailSignUpSuccess: () {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (_) => const HomeScreen()),
+          MaterialPageRoute(builder: (ctx) => const SetUp()),
         );
       },
-      
       onGooglePressed: () async {
         final ninja = AuthNinja.instance;
         await ninja.signInWithGoogle();
 
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (_) => const HomeScreen()),
+          MaterialPageRoute(builder: (ctx) => const HomeScreen()),
         );
       },
       onApplePressed: () async {
@@ -52,14 +51,9 @@ class LoginScreen extends StatelessWidget {
 
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (_) => const HomeScreen()),
+          MaterialPageRoute(builder: (ctx) => const HomeScreen()),
         );
       },
-
-      
-      );
-      // onApplePressed: () => const HomeScreen(),
-      // onGooglePressed: () => const HomeScreen(),
-  
+    );
   }
 }

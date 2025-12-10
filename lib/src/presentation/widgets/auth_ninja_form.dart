@@ -29,7 +29,7 @@ class _AuthFormState extends State<AuthForm> {
   
   bool _obscurePassword = true;
   bool _isLoading = false;
-  String? _errorFeedback;
+  String? errorFeedback;
   
   @override
   void initState() {
@@ -58,7 +58,7 @@ class _AuthFormState extends State<AuthForm> {
     _emailController.clear();
     _passwordController.clear();
     setState(() {
-      _errorFeedback = null;
+      errorFeedback = null;
       _obscurePassword = true;
     });
   }
@@ -68,7 +68,7 @@ class _AuthFormState extends State<AuthForm> {
     
     setState(() {
       _isLoading = true;
-      _errorFeedback = null;
+      errorFeedback = null;
     });
     
     try {
@@ -78,7 +78,7 @@ class _AuthFormState extends State<AuthForm> {
       );
     } catch (e) {
       setState(() {
-        _errorFeedback = widget.isSignUpMode
+        errorFeedback = widget.isSignUpMode
             ? 'Could not sign up with those details'
             : 'Incorrect login credentials';
       });

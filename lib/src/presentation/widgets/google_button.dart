@@ -10,6 +10,7 @@ class GoogleLoginButton extends StatelessWidget {
   final Color? textColor;
   final bool showText;
   final double size;
+  final bool isLoading;
 
   GoogleLoginButton({
     super.key,
@@ -19,30 +20,46 @@ class GoogleLoginButton extends StatelessWidget {
     this.textColor,
     this.showText = true,
     this.size = 56, this.onPressed,
+    this.isLoading = false,
   });
 
   final ninja = AuthNinja.instance;
   @override
   Widget build(BuildContext context) {
-    final buttonContent = Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SvgPicture.asset(
-          "lib/assets/Google.svg",
-          package: 'auth_ninja_sdk',
-          width: 22,
-          height: 22,
-        ),
-        const SizedBox(width: 10),
-        Text(
-          text,
-          style: TextStyle(color: textColor ?? Colors.black87, fontSize: 16),
-        ),
-      ],
-    );
+    final buttonContent = isLoading
+        ? SizedBox(
+            height: 24,
+            width: 24,
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              valueColor: AlwaysStoppedAnimation(textColor ?? Colors.black87),
+            ),
+          )
+        : Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                "lib/assets/Google.svg",
+                package: 'auth_ninja_sdk',
+                width: 22,
+                height: 22,
+              ),
+              if (showText) ...[
+                const SizedBox(width: 10),
+                Text(
+                  text,
+                  style: TextStyle(
+                    color: textColor ?? Colors.black87,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ],
+          );
 
     return ElevatedButton(
-      onPressed: onPressed,
+       onPressed: isLoading ? null : onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor ?? Colors.white,
         padding: const EdgeInsets.symmetric(vertical: 14),
@@ -50,9 +67,9 @@ class GoogleLoginButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(borderRadius),
               ),
-        side: const BorderSide(
+        side: BorderSide(
           color: Color.fromARGB(255, 226, 225, 225),
-          width: 1,
+          width: isLoading ? 0 : 1,
         ),
       ),
 

@@ -19,12 +19,47 @@ class LoginScreen extends StatelessWidget {
         signUpTitle: 'Sign Up',
         logoAssetPath: 'assets/defaultimage.png',
         logoheight: 200,
-        logowidth: 200,
+        logowidth: 100,
         // More customizations
       ),
-      onEmaiPassword: (),
-      onApplePressed: () => const HomeScreen(),
-      onGooglePressed: () => const HomeScreen(),
-    );
+
+      onLoginSubmit: () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const HomeScreen()),
+        );
+      },
+
+      onSignupSubmit: () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const HomeScreen()),
+        );
+      },
+      
+      onGooglePressed: () async {
+        final ninja = AuthNinja.instance;
+        await ninja.signInWithGoogle();
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const HomeScreen()),
+        );
+      },
+      onApplePressed: () async {
+        final ninja = AuthNinja.instance;
+        await ninja.signInWithApple();
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const HomeScreen()),
+        );
+      },
+
+      
+      );
+      // onApplePressed: () => const HomeScreen(),
+      // onGooglePressed: () => const HomeScreen(),
+  
   }
 }

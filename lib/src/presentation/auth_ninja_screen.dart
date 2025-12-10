@@ -5,22 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'widgets/social_login_section.dart';
 
-enum AuthMode { login, signup }
-
 class AuthNinjaScreen extends ConsumerStatefulWidget {
   final AuthNinjaConfig config;
-  final AuthMode initialMode;
-  final Function(String email, String password)? onEmaiPassword;
+  final Future<void> Function(String email, String password)?
+  onEmailPasswordSubmit;
+  final VoidCallback? onLoginSubmit;
+  final VoidCallback? onSignupSubmit;
   final VoidCallback? onGooglePressed;
   final VoidCallback? onApplePressed;
 
   const AuthNinjaScreen({
     super.key,
     required this.config,
-    this.initialMode = AuthMode.login,
     this.onGooglePressed,
     this.onApplePressed,
-    this.onEmaiPassword,
+    this.onEmailPasswordSubmit, this.onLoginSubmit, this.onSignupSubmit,
   });
 
   @override
@@ -28,40 +27,29 @@ class AuthNinjaScreen extends ConsumerStatefulWidget {
 }
 
 class _AuthScreenState extends ConsumerState<AuthNinjaScreen> {
-  late AuthMode mode;
-
-  @override
-  void initState() {
-    super.initState();
-    mode = widget.initialMode;
-  }
-
-  void toggleMode() {
-    setState(
-      () => mode = mode == AuthMode.login ? AuthMode.signup : AuthMode.login,
-    );
-  }
-
-  Future<void> handleEmailSubmit(String email, String password) async {
+  bool _isLoginMode = true; // true = Login, false = Signup
+  
+  Future<void> _handleEmailPasswordSubmit(String email, String password) async {
     final ninja = AuthNinja.instance;
-    try {
-      if (mode == AuthMode.login) {
+
+  try {
+    if (_isLoginMode) {
+      
         await ninja.signInWithEmail(email, password);
-        widget.onEmaiPassword;
-      } else {
+        widget.onLoginSubmit?.call();
+ 
+    } else {
         await ninja.signUpWithEmail(email, password);
-         widget.onEmaiPassword;
-      }
-    } catch (e) {
-      // Error handling: You can show a Snackbar or use your AuthState errorMessage
-      // final errorMsg = ref.read(authNotifierProvider).errorMessage ?? "An error occurred";
-      // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(errorMsg)));
+        widget.onSignupSubmit?.call();
     }
+  } catch (e) {
+    rethrow;
   }
+}
 
   @override
   Widget build(BuildContext context) {
-    final title = mode == AuthMode.login
+    final title = _isLoginMode
         ? widget.config.loginTitle
         : widget.config.signUpTitle;
 
@@ -73,83 +61,87 @@ class _AuthScreenState extends ConsumerState<AuthNinjaScreen> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: .center,
               children: [
+                // Logo
                 if (widget.config.logoAssetPath != null)
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.asset(
-                      widget.config.logoAssetPath!,
-                      height: widget.config.logoheight,
-                      width: widget.config.logowidth,
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image.asset(
+                        widget.config.logoAssetPath!,
+                        height: widget.config.logoheight,
+                      ),
                     ),
                   ),
+                
                 const SizedBox(height: 40),
+                
+                // Title
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Text(
                     title,
-                    style:
-                        // widget.config.titleTextStyle ??
-                        Theme.of(context).textTheme.headlineMedium,
+                    style: widget.config.titleTextStyle ?? 
+                        Theme.of(context).textTheme.headlineMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                     textAlign: TextAlign.start,
                   ),
                 ),
+                
                 const SizedBox(height: 32),
 
-                // Email login/signup form
-                EmailLoginForm(
-                  mode: mode == AuthMode.login
-                      ? FormMode.login
-                      : FormMode.signup,
+                // Email/Password Form
+                EmailPasswordForm(
+                  isLoginMode: _isLoginMode,
+                  onSubmit: _handleEmailPasswordSubmit,
                   emailHint: widget.config.emailHint,
                   passwordHint: widget.config.passwordHint,
-                  buttonText: mode == AuthMode.login
+                  buttonText: _isLoginMode
                       ? widget.config.loginButtonText
                       : widget.config.signUpButtonText,
-                  padding: const EdgeInsets.symmetric(horizontal: 0),
-                  buttonColor: Colors.amberAccent,
+                  buttonColor: widget.config.primaryColor ?? Colors.amberAccent,
                   buttonBorderRadius: 40,
                   fieldBorderRadius: 40,
-                  onSubmit: handleEmailSubmit,
                 ),
 
-                const SizedBox(height: 60),
-                const OrDivider(),
-                const SizedBox(height: 16),
+                const SizedBox(height: 24),
+                
+                
 
-                // Social login buttons
-                SocialLoginSection(
-                  onApplePressed: widget.onApplePressed,
-                  // () async => await ninja.signInWithApple(),
-                  onGooglePressed: widget.onGooglePressed,
-                  // () async {
-                  //   await ninja.signInWithGoogle();
-                  //   if (ninja.isSignedIn) {
-                  //     Navigator.of(context).pop();
-                  //   }
-                  // },
-                  showGoogle: widget.config.enableGoogleAuth,
-                  showApple: widget.config.enableAppleAuth,
-                ),
+                // Show social logins only if enabled
+                if (widget.config.enableGoogleAuth || widget.config.enableAppleAuth) ...[
+                
+                  const OrDivider(),
+                  const SizedBox(height: 16),
 
-                const SizedBox(height: 16),
-
-                // Mode toggle link
+                  SocialLoginSection(
+                    onApplePressed: widget.onApplePressed,
+                    onGooglePressed: widget.onGooglePressed,
+                  ),
+                ],
+                const SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      mode == AuthMode.login
-                          ? "Don't have an account? "
-                          : "Already have an account? ",
+                      _isLoginMode
+                          ? "Don't have an account?"
+                          : "Already have an account?",
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                      ),
                     ),
+                    const SizedBox(width: 8),
                     GestureDetector(
-                      onTap: toggleMode,
+                      onTap: () {
+                        setState(() => _isLoginMode = !_isLoginMode);
+                      },
                       child: Text(
-                        mode == AuthMode.login ? "Sign Up" : "Sign In",
-                        style: const TextStyle(
-                          color: Colors.blue,
+                        _isLoginMode ? "Sign Up" : "Sign In",
+                        style: TextStyle(
+                          color: widget.config.primaryColor ?? 
+                              Theme.of(context).colorScheme.primary,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -164,78 +156,3 @@ class _AuthScreenState extends ConsumerState<AuthNinjaScreen> {
     );
   }
 }
-
-// import 'package:flutter/material.dart';
-
-// import '../core/auth_ninja_config.dart';
-// import '../domain/auth_ninja.dart';
-
-// class AuthNinjaScreen extends StatefulWidget {
-//   final AuthNinjaConfig config;
-
-//   const AuthNinjaScreen({super.key, required this.config});
-
-//   @override
-//   State<AuthNinjaScreen> createState() => _AuthNinjaScreenState();
-// }
-
-// class _AuthNinjaScreenState extends State<AuthNinjaScreen> {
-//   final _email = TextEditingController();
-//   final _password = TextEditingController();
-//   final ninja = AuthNinja.instance;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Center(
-//         child: SingleChildScrollView(
-//           padding: const EdgeInsets.all(24),
-//           child: Column(
-//             children: [
-//               if (widget.config.logoAssetPath != null)
-//                 Image.asset(widget.config.logoAssetPath!, height: 80),
-
-//               if (widget.config.appName != null)
-//                 Text(widget.config.appName!, style: const TextStyle(fontSize: 22)),
-
-//               if (widget.config.enableEmailAuth)
-//                 Column(
-//                   children: [
-//                     TextField(controller: _email),
-//                     TextField(controller: _password, obscureText: true),
-//                     ElevatedButton(
-//                       onPressed: () async {
-//                         await ninja.signInWithEmail(
-//                           _email.text,
-//                           _password.text,
-//                         );
-//                       },
-//                       child: const Text('Sign In'),
-//                     ),
-//                   ],
-//                 ),
-
-//               if (widget.config.enableGoogleAuth)
-//                 ElevatedButton(
-//                   onPressed: () async => await ninja.signInWithGoogle(),
-//                   child: const Text('Continue with Google'),
-//                 ),
-
-//               if (widget.config.enableAppleAuth)
-//                 ElevatedButton(
-//                   onPressed: () async => await ninja.signInWithApple(),
-//                   child: const Text('Continue with Apple'),
-//                 ),
-
-//               if (widget.config.enableFacebookAuth)
-//                 ElevatedButton(
-//                   onPressed: () async => await ninja.signInWithFacebook(),
-//                   child: const Text('Continue with Facebook'),
-//                 ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }

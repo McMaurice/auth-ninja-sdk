@@ -13,10 +13,10 @@ class LoginScreen extends StatelessWidget {
         enableAppleAuth: true,
         enableGoogleAuth: true,
         enableFacebookAuth: false,
-        loginButtonText: 'Login',
+        loginButtonText: 'Log in',
         signUpButtonText: 'Sign Up',
-        loginTitle: 'Login',
-        signUpTitle: 'Sign Up',
+        loginTitle: 'Log into the Vibe',
+        signUpTitle: 'Sign Up for a bumpy ride!',
         logoAssetPath: 'assets/defaultimage.png',
         logoheight: 200,
         logowidth: 100,
@@ -36,7 +36,7 @@ class LoginScreen extends StatelessWidget {
           MaterialPageRoute(builder: (_) => const HomeScreen()),
         );
       },
-      
+
       onGooglePressed: () async {
         final ninja = AuthNinja.instance;
         await ninja.signInWithGoogle();
@@ -55,11 +55,8 @@ class LoginScreen extends StatelessWidget {
           MaterialPageRoute(builder: (_) => const HomeScreen()),
         );
       },
-
-      
-      );
-      // onApplePressed: () => const HomeScreen(),
-      // onGooglePressed: () => const HomeScreen(),
-  
+    );
+    // onApplePressed: () => const HomeScreen(),
+    // onGooglePressed: () => const HomeScreen(),
   }
 }

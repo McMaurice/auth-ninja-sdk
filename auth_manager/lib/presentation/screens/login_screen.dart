@@ -1,5 +1,4 @@
 import 'package:auth_manager/presentation/screens/home_screen.dart';
-import 'package:auth_manager/presentation/screens/set_up.dart';
 import 'package:auth_ninja_sdk/auth_ninja_sdk.dart';
 import 'package:flutter/material.dart';
 
@@ -24,23 +23,23 @@ class LoginScreen extends StatelessWidget {
       ),
 
       onEmailLoginSuccess: () {
-        Navigator.pushReplacement(
+        Navigator.push(
           context,
           MaterialPageRoute(builder: (ctx) => const HomeScreen()),
         );
       },
 
       onEmailSignUpSuccess: () {
-        Navigator.pushReplacement(
+        Navigator.push(
           context,
-          MaterialPageRoute(builder: (ctx) => const SetUp()),
+          MaterialPageRoute(builder: (ctx) => const HomeScreen()),
         );
       },
       onGooglePressed: () async {
         final ninja = AuthNinja.instance;
         await ninja.signInWithGoogle();
 
-        Navigator.pushReplacement(
+        Navigator.push(
           context,
           MaterialPageRoute(builder: (ctx) => const HomeScreen()),
         );
@@ -49,7 +48,7 @@ class LoginScreen extends StatelessWidget {
         final ninja = AuthNinja.instance;
         await ninja.signInWithApple();
 
-        Navigator.pushReplacement(
+        Navigator.push(
           context,
           MaterialPageRoute(builder: (ctx) => const HomeScreen()),
         );

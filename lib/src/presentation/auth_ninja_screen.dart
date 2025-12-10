@@ -10,12 +10,15 @@ enum AuthMode { login, signup }
 class AuthNinjaScreen extends ConsumerStatefulWidget {
   final AuthNinjaConfig config;
   final AuthMode initialMode;
-  
+  final VoidCallback? onGooglePressed; 
+  final VoidCallback? onApplePressed; 
 
   const AuthNinjaScreen({
     super.key,
     required this.config,
-    this.initialMode = AuthMode.login,
+    this.initialMode = AuthMode.login, 
+    this.onGooglePressed,
+    this.onApplePressed,
   });
 
   @override
@@ -118,8 +121,15 @@ class _AuthScreenState extends ConsumerState<AuthNinjaScreen> {
           
                 // Social login buttons
                 SocialLoginSection(
-                  onApplePressed: () async => await ninja.signInWithApple(),
-                  onGooglePressed:() async => await ninja.signInWithGoogle(),
+                  onApplePressed: widget.onApplePressed,
+                  // () async => await ninja.signInWithApple(),
+                  onGooglePressed: widget.onGooglePressed,                 
+                  // () async {
+                  //   await ninja.signInWithGoogle();
+                  //   if (ninja.isSignedIn) {
+                  //     Navigator.of(context).pop();
+                  //   }
+                  // },
                   showGoogle: widget.config.enableGoogleAuth,
                   showApple: widget.config.enableAppleAuth,
                 ),

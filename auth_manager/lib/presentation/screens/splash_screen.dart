@@ -1,16 +1,17 @@
+import 'package:auth_manager/presentation/screens/home_screen.dart';
 import 'package:auth_manager/presentation/screens/login_screen.dart';
 import 'package:auth_ninja_sdk/auth_ninja_sdk.dart';
 import 'package:flutter/material.dart';
 
-class SplashScreenWithAuthCheck extends StatefulWidget {
-  const SplashScreenWithAuthCheck({super.key});
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
 
   @override
-  State<SplashScreenWithAuthCheck> createState() =>
-      _SplashScreenWithAuthCheckState();
+  State<SplashScreen> createState() =>
+      _SplashScreenState();
 }
 
-class _SplashScreenWithAuthCheckState extends State<SplashScreenWithAuthCheck> {
+class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> _checkAuthAndNavigate() async {
     // Show splash for minimum 2 seconds
@@ -23,9 +24,9 @@ class _SplashScreenWithAuthCheckState extends State<SplashScreenWithAuthCheck> {
 
     if (authNinja.isSignedIn) {
       // User is already logged in, go to home
-      // Navigator.of(context).pushReplacement(
-      //   MaterialPageRoute(builder: (context) => const HomeScreen()),
-      // );
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const HomeScreen()),
+      );
     } else {
       // User not logged in, show auth screen
       Navigator.of(context).pushReplacement(

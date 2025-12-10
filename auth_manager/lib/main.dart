@@ -2,6 +2,7 @@ import 'package:auth_manager/firebase_options.dart';
 import 'package:auth_manager/presentation/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 Future<void> main() async {
@@ -9,7 +10,7 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.poppinsTextTheme(),
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.amber),
       ),
-      home: const SplashScreenWithAuthCheck()
+      home: const SplashScreen()
     );
   }
 }

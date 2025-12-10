@@ -86,22 +86,23 @@ class _AuthScreenState extends ConsumerState<AuthNinjaScreen> {
                       ),
                     ),
                   ),
-                
+
                 const SizedBox(height: 40),
-                
+
                 // Title
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Text(
                     title,
-                    style: widget.config.titleTextStyle ?? 
+                    style:
+                        widget.config.titleTextStyle ??
                         Theme.of(context).textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                     textAlign: TextAlign.start,
                   ),
                 ),
-                
+
                 const SizedBox(height: 32),
 
                 // Email/Password Form
@@ -127,8 +128,6 @@ class _AuthScreenState extends ConsumerState<AuthNinjaScreen> {
                 ),
 
                 const SizedBox(height: 24),
-                
-                
 
                 // Show social logins only if enabled
                 if (widget.config.enableGoogleAuth ||
@@ -154,9 +153,7 @@ class _AuthScreenState extends ConsumerState<AuthNinjaScreen> {
                       _isLoginMode
                           ? "Don't have an account?"
                           : "Already have an account?",
-                      style: TextStyle(
-                        color: Colors.grey[600],
-                      ),
+                      style: TextStyle(color: Colors.grey[600]),
                     ),
                     const SizedBox(width: 8),
                     GestureDetector(
@@ -167,7 +164,8 @@ class _AuthScreenState extends ConsumerState<AuthNinjaScreen> {
                       child: Text(
                         _isLoginMode ? "Sign Up" : "Sign In",
                         style: TextStyle(
-                          color: widget.config.primaryColor ?? 
+                          color:
+                              widget.config.primaryColor ??
                               Theme.of(context).colorScheme.primary,
                           fontWeight: FontWeight.bold,
                         ),

@@ -13,6 +13,7 @@ export 'src/domain/auth_ninja.dart';
 export 'src/presentation/auth_ninja_screen.dart';
 
 export 'src/presentation/widgets/email_password_form.dart';
+export 'src/core/auth_ninja_state.dart';
 
 
 /*

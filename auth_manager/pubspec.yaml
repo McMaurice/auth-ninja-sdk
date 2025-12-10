@@ -17,8 +17,11 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_svg: ^2.1.1
   google_fonts: ^6.3.3
+  firebase_core: ^4.2.1
+firebase_auth: ^6.1.2
   
 
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -26,3 +29,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+# To add assets to your package, add an assets section, like this:
+  assets:
+    - assets/
+    - assets/defaultimage.png

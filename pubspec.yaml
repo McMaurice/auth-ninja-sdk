@@ -17,10 +17,10 @@ dependencies:
   flutter_facebook_auth: ^6.0.0
   flutter_riverpod: ^3.0.3
   flutter_svg: ^2.1.1
-  flutter_facebook_auth:
-    # Disable macOS default plugin to avoid the facebook_auth_desktop error
-    macos:
-      default_package: none
+  # flutter_facebook_auth:
+  #   # Disable macOS default plugin to avoid the facebook_auth_desktop error
+  #   macos:
+  #     default_package: none
 dev_dependencies:
   flutter_test:
     sdk: flutter

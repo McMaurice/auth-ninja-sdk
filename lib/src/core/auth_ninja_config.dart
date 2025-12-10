@@ -1,32 +1,37 @@
 import 'package:flutter/material.dart';
-
+ 
 class AuthNinjaConfig {
-  final bool enableEmailAuth;
-  final bool enableGoogleAuth;
-  final bool enableAppleAuth;
-  final bool enableFacebookAuth;
+  // Enabled auth methods
+ final bool enableEmailAuth;
+ final bool enableGoogleAuth;
+ final bool enableAppleAuth;
+ final bool enableFacebookAuth;
+ 
+ // UI Configuration
+ final String? appName;
+ final String? logoAssetPath;
+ final double? logoheight;
+  final double? logowidth;
+ final Color? primaryColor;
+ final Color? accentColor;
+ final TextStyle? titleTextStyle;
+ final TextStyle? buttonTextStyle;
+ 
+ 
+ // Custom messages
+ final String loginTitle;
+ final String signUpTitle;
+ final String emailHint;
+ final String passwordHint;
+ final String loginButtonText;
+ final String signUpButtonText;
+ final String? designImage;
+ 
 
-  final String? appName;
-  final String? logoAssetPath;
-
-  final Color? primaryColor;
-  final Color? accentColor;
-
-  final TextStyle? titleTextStyle;
-  final TextStyle? buttonTextStyle;
-
-  final String loginTitle;
-  final String signUpTitle;
-  final String emailHint;
-  final String passwordHint;
-  final String loginButtonText;
-  final String signUpButtonText;
-
-  const AuthNinjaConfig({
+ const AuthNinjaConfig({
     this.enableEmailAuth = true,
     this.enableGoogleAuth = true,
     this.enableAppleAuth = true,
-    this.enableFacebookAuth = true,
     this.appName,
     this.logoAssetPath,
     this.primaryColor,
@@ -39,5 +44,10 @@ class AuthNinjaConfig {
     this.passwordHint = 'Password',
     this.loginButtonText = 'Sign In',
     this.signUpButtonText = 'Sign Up',
+    required this.enableFacebookAuth,
+    this.designImage,
+    this.logoheight,
+    this.logowidth,
   });
+ 
 }

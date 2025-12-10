@@ -7,7 +7,7 @@ A flexible Flutter authentication SDK for Firebase projects. You use it with the
 
 # Preview Image
 
-![PHOTO-2025-12-10-20-55-51](https://github.com/user-attachments/assets/d7444038-ce0f-4979-8b11-5c20ba8aa7dc)
+<img src="https://github.com/user-attachments/assets/d7444038-ce0f-4979-8b11-5c20ba8aa7dc" width="200" height="500" />
 
 
 ---

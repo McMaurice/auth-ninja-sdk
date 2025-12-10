@@ -8,6 +8,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ninja = AuthNinja.instance;
+    final userInfo = ninja.getCurrentUserInfo();
     return Scaffold(
       body: Center(
         child: Column(
@@ -16,6 +17,10 @@ class HomeScreen extends StatelessWidget {
             const Text(
               'Welcome to the Home Screen!',
               style: TextStyle(fontSize: 24),
+            ),
+            Text(
+              userInfo?['email'] ?? 'No email',
+              style: TextStyle(fontSize: 16),
             ),
 
             const SizedBox(height: 20),

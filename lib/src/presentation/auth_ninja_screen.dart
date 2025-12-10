@@ -10,15 +10,17 @@ enum AuthMode { login, signup }
 class AuthNinjaScreen extends ConsumerStatefulWidget {
   final AuthNinjaConfig config;
   final AuthMode initialMode;
-  final VoidCallback? onGooglePressed; 
-  final VoidCallback? onApplePressed; 
+  final Function(String email, String password)? onEmaiPassword;
+  final VoidCallback? onGooglePressed;
+  final VoidCallback? onApplePressed;
 
   const AuthNinjaScreen({
     super.key,
     required this.config,
-    this.initialMode = AuthMode.login, 
+    this.initialMode = AuthMode.login,
     this.onGooglePressed,
     this.onApplePressed,
+    this.onEmaiPassword,
   });
 
   @override
@@ -40,19 +42,15 @@ class _AuthScreenState extends ConsumerState<AuthNinjaScreen> {
     );
   }
 
-  Future<void> handleEmailSubmit(
-    String email,
-    String password,
-  ) async {
+  Future<void> handleEmailSubmit(String email, String password) async {
     final ninja = AuthNinja.instance;
-    // final authNotifier = ref.read(authNotifierProvider.notifier);
     try {
       if (mode == AuthMode.login) {
-         await ninja.signInWithEmail(email, password);
+        await ninja.signInWithEmail(email, password);
+        widget.onEmaiPassword;
       } else {
-         await ninja.signUpWithEmail(email, password);
-        debugPrint('Email: $email');
-       
+        await ninja.signUpWithEmail(email, password);
+         widget.onEmaiPassword;
       }
     } catch (e) {
       // Error handling: You can show a Snackbar or use your AuthState errorMessage
@@ -63,7 +61,6 @@ class _AuthScreenState extends ConsumerState<AuthNinjaScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final ninja = AuthNinja.instance;
     final title = mode == AuthMode.login
         ? widget.config.loginTitle
         : widget.config.signUpTitle;
@@ -83,7 +80,7 @@ class _AuthScreenState extends ConsumerState<AuthNinjaScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: Image.asset(
                       widget.config.logoAssetPath!,
-                      height:widget.config.logoheight,
+                      height: widget.config.logoheight,
                       width: widget.config.logowidth,
                     ),
                   ),
@@ -93,16 +90,18 @@ class _AuthScreenState extends ConsumerState<AuthNinjaScreen> {
                   child: Text(
                     title,
                     style:
-                       // widget.config.titleTextStyle ??
+                        // widget.config.titleTextStyle ??
                         Theme.of(context).textTheme.headlineMedium,
                     textAlign: TextAlign.start,
                   ),
                 ),
                 const SizedBox(height: 32),
-          
+
                 // Email login/signup form
                 EmailLoginForm(
-                  mode: mode == AuthMode.login ? FormMode.login : FormMode.signup,
+                  mode: mode == AuthMode.login
+                      ? FormMode.login
+                      : FormMode.signup,
                   emailHint: widget.config.emailHint,
                   passwordHint: widget.config.passwordHint,
                   buttonText: mode == AuthMode.login
@@ -114,16 +113,16 @@ class _AuthScreenState extends ConsumerState<AuthNinjaScreen> {
                   fieldBorderRadius: 40,
                   onSubmit: handleEmailSubmit,
                 ),
-          
+
                 const SizedBox(height: 60),
                 const OrDivider(),
                 const SizedBox(height: 16),
-          
+
                 // Social login buttons
                 SocialLoginSection(
                   onApplePressed: widget.onApplePressed,
                   // () async => await ninja.signInWithApple(),
-                  onGooglePressed: widget.onGooglePressed,                 
+                  onGooglePressed: widget.onGooglePressed,
                   // () async {
                   //   await ninja.signInWithGoogle();
                   //   if (ninja.isSignedIn) {
@@ -133,11 +132,11 @@ class _AuthScreenState extends ConsumerState<AuthNinjaScreen> {
                   showGoogle: widget.config.enableGoogleAuth,
                   showApple: widget.config.enableAppleAuth,
                 ),
-          
+
                 const SizedBox(height: 16),
-          
+
                 // Mode toggle link
-              Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
@@ -156,7 +155,7 @@ class _AuthScreenState extends ConsumerState<AuthNinjaScreen> {
                       ),
                     ),
                   ],
-                )
+                ),
               ],
             ),
           ),
@@ -165,9 +164,6 @@ class _AuthScreenState extends ConsumerState<AuthNinjaScreen> {
     );
   }
 }
-
-
-
 
 // import 'package:flutter/material.dart';
 

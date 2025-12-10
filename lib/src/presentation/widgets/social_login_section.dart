@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 class SocialLoginSection extends StatelessWidget {
   final bool showGoogle;
   final bool showApple;
-  final bool isRow; 
-  final double spacing; 
-  final bool googleShowText; 
-  final bool appleShowText; 
-  final bool googleCircular; 
-  final bool appleCircular; 
-  final double circularSize; 
+  final bool isRow;
+  final double spacing;
+  final bool googleShowText;
+  final bool appleShowText;
+  final bool googleCircular;
+  final bool appleCircular;
+  final double circularSize;
   final Color? googleBackground;
   final Color? applebackground;
   final VoidCallback? onGooglePressed;
@@ -39,23 +39,26 @@ class SocialLoginSection extends StatelessWidget {
     final buttons = <Widget>[];
 
     if (showGoogle) {
-      buttons.add(GoogleLoginButton(
-        showText: googleShowText,
-        isCircular: googleCircular,
-        size: circularSize,
-        onPressed: onGooglePressed,
-        backgroundColor: googleBackground ??Colors.white,
-      ));
+      buttons.add(
+        GoogleLoginButton(
+          showText: googleShowText,
+          isCircular: googleCircular,
+          size: circularSize,
+          backgroundColor: googleBackground ?? Colors.white,
+        ),
+      );
     }
 
     if (showApple) {
-      buttons.add(AppleLoginButton(
-        showText: appleShowText,
-        isCircular: appleCircular,
-        size: circularSize,
-        onPressed: onApplePressed,
-        backgroundColor: applebackground ??Colors.white,
-      ));
+      buttons.add(
+        AppleLoginButton(
+          showText: appleShowText,
+          isCircular: appleCircular,
+          size: circularSize,
+          onPressed: onApplePressed,
+          backgroundColor: applebackground ?? Colors.white,
+        ),
+      );
     }
 
     if (buttons.isEmpty) return const SizedBox.shrink();
@@ -64,18 +67,26 @@ class SocialLoginSection extends StatelessWidget {
         ? Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: buttons
-                .map((b) => Padding(
-                      padding: EdgeInsets.only(right: b != buttons.last ? spacing : 0),
-                      child: b,
-                    ))
+                .map(
+                  (b) => Padding(
+                    padding: EdgeInsets.only(
+                      right: b != buttons.last ? spacing : 0,
+                    ),
+                    child: b,
+                  ),
+                )
                 .toList(),
           )
         : Column(
             children: buttons
-                .map((b) => Padding(
-                      padding: EdgeInsets.only(bottom: b != buttons.last ? spacing : 0),
-                      child: b,
-                    ))
+                .map(
+                  (b) => Padding(
+                    padding: EdgeInsets.only(
+                      bottom: b != buttons.last ? spacing : 0,
+                    ),
+                    child: b,
+                  ),
+                )
                 .toList(),
           );
   }

@@ -1,3 +1,4 @@
+import 'package:auth_ninja_sdk/auth_ninja_sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -9,10 +10,9 @@ class GoogleLoginButton extends ConsumerWidget {
   final Color? textColor;
   final bool showText;
   final bool isCircular;
-  final double size; // used for circular mode
-  final VoidCallback? onPressed;
+  final double size;
 
-  const GoogleLoginButton({
+  GoogleLoginButton({
     super.key,
     this.text = "Continue with Google",
     this.borderRadius = 12,
@@ -20,10 +20,10 @@ class GoogleLoginButton extends ConsumerWidget {
     this.textColor,
     this.showText = true,
     this.isCircular = false,
-    this.size = 56, // default circular size
-    this.onPressed,
+    this.size = 56,
   });
 
+  final ninja = AuthNinja.instance;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final buttonContent = Row(
@@ -39,17 +39,14 @@ class GoogleLoginButton extends ConsumerWidget {
           const SizedBox(width: 10),
           Text(
             text,
-            style: TextStyle(
-              color: textColor ?? Colors.black87,
-              fontSize: 16,
-            ),
+            style: TextStyle(color: textColor ?? Colors.black87, fontSize: 16),
           ),
-        ]
+        ],
       ],
     );
 
     return ElevatedButton(
-      onPressed: onPressed,
+      onPressed: ninja.signInWithGoogle,
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor ?? Colors.white,
         padding: isCircular
@@ -62,7 +59,10 @@ class GoogleLoginButton extends ConsumerWidget {
             : RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(borderRadius),
               ),
-        side: const BorderSide(color: Color.fromARGB(255, 226, 225, 225), width: 1),
+        side: const BorderSide(
+          color: Color.fromARGB(255, 226, 225, 225),
+          width: 1,
+        ),
       ),
       child: isCircular
           ? SvgPicture.asset(

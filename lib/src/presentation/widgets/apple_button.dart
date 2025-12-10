@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:auth_ninja_sdk/auth_ninja_sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,10 +11,10 @@ class AppleLoginButton extends ConsumerWidget {
   final Color? textColor;
   final bool showText;
   final bool isCircular;
-  final double size; 
+  final double size;
   final VoidCallback? onPressed;
 
-  const AppleLoginButton({
+  AppleLoginButton({
     super.key,
     this.text = "Continue with Apple",
     this.borderRadius = 12,
@@ -25,6 +26,7 @@ class AppleLoginButton extends ConsumerWidget {
     this.onPressed,
   });
 
+  final ninja = AuthNinja.instance;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Only show on Apple platforms
@@ -45,17 +47,14 @@ class AppleLoginButton extends ConsumerWidget {
           const SizedBox(width: 10),
           Text(
             text,
-            style: TextStyle(
-              color: textColor ?? Colors.white,
-              fontSize: 16,
-            ),
+            style: TextStyle(color: textColor ?? Colors.white, fontSize: 16),
           ),
-        ]
+        ],
       ],
     );
 
     return ElevatedButton(
-      onPressed: onPressed,
+      onPressed: ninja.signInWithApple,
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor ?? Colors.black,
         padding: isCircular

@@ -26,22 +26,17 @@ A flexible Flutter authentication SDK for Firebase projects. You use it with the
 
 # Installation
 
-Add this to pubspec.yaml.
-
 dependencies:
-auth_ninja_sdk: ^1.0.0
-firebase_core: ^3.0.0
-firebase_auth: ^5.0.0
+  auth_ninja_sdk: ^1.0.0
+  firebase_core: ^3.0.0
+  firebase_auth: ^5.0.0
 
 auth_ninja_sdk:
-path: ../auth_ninja_sdk
-firebase_core: ^3.0.0
-firebase_auth: ^5.0.0
-Use GitHub
-git:
-url: https://github.com/McMaurice/auth-ninja-sdk
+  git:
+    url: https://github.com/McMaurice/auth-ninja-sdk
+  firebase_core: ^3.0.0
+  firebase_auth: ^5.0.0
 
-Run => flutter pub get
 
 ---
 
@@ -86,40 +81,41 @@ You choose UI mode or headless mode.
 ## Initialize Firebase
 
 void main() async {
-WidgetsFlutterBinding.ensureInitialized();
-await Firebase.initializeApp(
-options: DefaultFirebaseOptions.currentPlatform,
-);
-runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(MyApp());
 }
+
 
 ---
 
 # Mode A: Built-in UI
 
+import 'package:flutter/material.dart';
 import 'package:auth_ninja_sdk/auth_ninja_sdk.dart';
 
 class MyApp extends StatelessWidget {
-@override
-Widget build(BuildContext context) {
-return MaterialApp(
-home: AuthNinjaScreen(
-initialMode: AuthMode.login,
-config: AuthConfig(
-loginTitle: 'Welcome Back!',
-signUpTitle: 'Create Account',
-enableGoogleAuth: true,
-enableAppleAuth: true,
-enableFacebookAuth: true,
-primaryColor: Colors.blue,
-),
-onApplePressed: () => const HomeScreen(),
-onGooglePressed: () => const HomeScreen(),
-),
-);
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: AuthNinjaScreen(
+        initialMode: AuthMode.login,
+        config: AuthConfig(
+          loginTitle: 'Welcome Back!',
+          signUpTitle: 'Create Account',
+          enableGoogleAuth: true,
+          enableAppleAuth: true,
+          enableFacebookAuth: true,
+          primaryColor: Colors.blue,
+        ),
+        onApplePressed: () => const HomeScreen(),
+        onGooglePressed: () => const HomeScreen(),
+      ),
+    );
+  }
 }
-}
-
 ---
 
 # Mode B: Headless
@@ -128,14 +124,19 @@ import 'package:auth_ninja_sdk/auth_ninja_sdk.dart';
 
 final ninja = AuthNinja.instance;
 
-final state = await ninja.signInWithEmail(
-'[user@example.com](mailto:user@example.com)',
-'password123',
-);
+void signInUser() async {
+  final state = await ninja.signInWithEmail(
+    'user@example.com',
+    'password123',
+  );
 
-if (state is Authenticated) {
-print(state.user.email);
+  if (state is Authenticated) {
+    print(state.user.email);
+  } else {
+    print('Authentication failed');
+  }
 }
+
 
 ---
 
@@ -144,16 +145,19 @@ print(state.user.email);
 Use the singleton in your UI logic.
 
 Future<void> submitLogin(String email, String password) async {
-final result = await AuthNinja.instance.signInWithEmail(email, password);
+  final result = await AuthNinja.instance.signInWithEmail(email, password);
 
-if (result is Authenticated) {
-// move to home
+  if (result is Authenticated) {
+    // Navigate to HomeScreen
+    // Example:
+    // Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => HomeScreen()));
+  } else if (result is AuthError) {
+    // Show error message to user
+    // Example:
+    // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result.message)));
+  }
 }
 
-if (result is AuthError) {
-// show message
-}
-}
 
 ---
 
@@ -218,17 +222,6 @@ AuthNinja.instance
 Example
 final info = AuthNinja.instance.getCurrentUserInfo();
 print(info);
-
----
-
-# Testing
-
-Pass a mock repo when you want to override Firebase.
-
-AuthNinja.initialize(repository: mockRepo);
-
-Reset between tests.
-AuthNinja.reset();
 
 ---
 

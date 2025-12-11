@@ -1,4 +1,3 @@
-
 # AuthNinja SDK
 
 A flexible Flutter authentication SDK for Firebase projects. You use it with the built-in UI or your own UI. The SDK supports email and password, Google, Apple, and Facebook sign-in. It offers strong typing, token refresh, clear errors, and reactive state.
@@ -8,7 +7,6 @@ A flexible Flutter authentication SDK for Firebase projects. You use it with the
 # Preview Image
 
 <img src="https://github.com/user-attachments/assets/d7444038-ce0f-4979-8b11-5c20ba8aa7dc" width="200" height="500" />
-
 
 ---
 
@@ -27,16 +25,23 @@ A flexible Flutter authentication SDK for Firebase projects. You use it with the
 # Installation
 
 dependencies:
+auth_ninja_sdk:
+    path: ../
+    
+or from git hub
+
+  auth_ninja_sdk:
+    git:
+      url: https://github.com/McMaurice/auth-ninja-sdk
+      ref: main 
+      
   auth_ninja_sdk: ^1.0.0
   firebase_core: ^3.0.0
   firebase_auth: ^5.0.0
-
-auth_ninja_sdk:
-  git:
-    url: https://github.com/McMaurice/auth-ninja-sdk
+ From directory:
+ 
   firebase_core: ^3.0.0
   firebase_auth: ^5.0.0
-
 
 ---
 
@@ -80,6 +85,7 @@ You choose UI mode or headless mode.
 
 ## Initialize Firebase
 
+```dart
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -87,12 +93,13 @@ void main() async {
   );
   runApp(MyApp());
 }
-
+```
 
 ---
 
 # Mode A: Built-in UI
 
+```dart
 import 'package:flutter/material.dart';
 import 'package:auth_ninja_sdk/auth_ninja_sdk.dart';
 
@@ -116,10 +123,13 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+```
+
 ---
 
 # Mode B: Headless
 
+```dart
 import 'package:auth_ninja_sdk/auth_ninja_sdk.dart';
 
 final ninja = AuthNinja.instance;
@@ -136,14 +146,13 @@ void signInUser() async {
     print('Authentication failed');
   }
 }
-
+```
 
 ---
 
 # Connecting Custom UI
 
-Use the singleton in your UI logic.
-
+```dart
 Future<void> submitLogin(String email, String password) async {
   final result = await AuthNinja.instance.signInWithEmail(email, password);
 
@@ -157,7 +166,7 @@ Future<void> submitLogin(String email, String password) async {
     // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result.message)));
   }
 }
-
+```
 
 ---
 
@@ -206,22 +215,24 @@ Web
 
 # API Summary
 
+```dart
 AuthNinja.instance
-• signInWithEmail
-• signUpWithEmail
-• resetPassword
-• signInWithGoogle
-• signInWithApple
-• signInWithFacebook
-• signOut
-• authStateChanges
-• currentUser helpers
-• token check and refresh
-• ensureValidToken
+  .signInWithEmail
+  .signUpWithEmail
+  .resetPassword
+  .signInWithGoogle
+  .signInWithApple
+  .signInWithFacebook
+  .signOut
+  .authStateChanges
+  .currentUser helpers
+  .token check and refresh
+  .ensureValidToken
 
-Example
+// Example
 final info = AuthNinja.instance.getCurrentUserInfo();
 print(info);
+```
 
 ---
 

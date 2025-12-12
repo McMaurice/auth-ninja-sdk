@@ -20,12 +20,13 @@ class HomeScreen extends StatelessWidget {
             ),
             Text(
               userInfo?['email'] ?? 'No email',
-              style: TextStyle(fontSize: 16),
+              style:const TextStyle(fontSize: 16),
             ),
 
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async{
+                if (!context.mounted) return;
                 await ninja.signOut();
                 if (!ninja.isSignedIn) {
                   Navigator.of(context).pushReplacement(

@@ -1,5 +1,4 @@
 import 'package:auth_ninja_sdk/auth_ninja_sdk.dart';
-import 'package:auth_ninja_sdk/src/presentation/widgets/auth_ninja_error_banner.dart';
 import 'package:auth_ninja_sdk/src/presentation/widgets/email_password_form.dart';
 import 'package:auth_ninja_sdk/src/presentation/widgets/or_divider.dart';
 import 'package:auth_ninja_sdk/src/providers/auth_notifier_provider.dart';
@@ -11,11 +10,9 @@ class AuthNinjaScreen extends ConsumerStatefulWidget {
   final AuthNinjaConfig config;
   final Future<void> Function(String email, String password)? onEmailPasswordSubmit;
   final Future<void> Function(String email, String password)? onEmailPasswordSignUpSubmit;
-  final VoidCallback? onLoginSubmit;
-  final VoidCallback? onSignupSubmit;
+
   final VoidCallback? onGooglePressed;
   final VoidCallback? onApplePressed;
-  final VoidCallback? onSuccess;
   final VoidCallback? onEmailLoginSuccess;  
   final VoidCallback? onEmailSignUpSuccess;
 
@@ -25,9 +22,6 @@ class AuthNinjaScreen extends ConsumerStatefulWidget {
     this.onGooglePressed,
     this.onApplePressed,
     this.onEmailPasswordSubmit,
-    this.onLoginSubmit,
-    this.onSignupSubmit,
-    this.onSuccess,
     this.onEmailLoginSuccess,
     this.onEmailSignUpSuccess,
     this.onEmailPasswordSignUpSubmit,
@@ -48,6 +42,7 @@ class _AuthScreenState extends ConsumerState<AuthNinjaScreen> {
     
     if (authState.status == AuthNinjaStatus.authenticated) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
+        if(!mounted) return;
         if (_isLoginMode && widget.onEmailLoginSuccess != null) {
           widget.onEmailLoginSuccess!.call();
         } else if (!_isLoginMode && widget.onEmailSignUpSuccess != null) {
@@ -59,6 +54,7 @@ class _AuthScreenState extends ConsumerState<AuthNinjaScreen> {
     if (authState.errorMessage != null && authState.errorMessage!.isNotEmpty) {
       // Future.microtask to ensure this runs after build
       Future.microtask(() {
+        if(!mounted) return;
         AuthNinjaErrorBanner.show(
           context: context,
           errorMessage: authState.errorMessage!,
@@ -130,10 +126,11 @@ class _AuthScreenState extends ConsumerState<AuthNinjaScreen> {
                         }
                       }
                     } catch (e) {
-                      // Only show error if using notifier fallback
+                      if(!mounted) return;
                       if (widget.onEmailPasswordSubmit == null &&
                           widget.onEmailPasswordSignUpSubmit == null &&
                           e is AuthNinjaException) {
+                            if(!mounted) return;
                         AuthNinjaErrorBanner.show(
                           context: context,
                           errorMessage: e.message,

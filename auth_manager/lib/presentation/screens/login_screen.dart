@@ -10,7 +10,7 @@ class LoginScreen extends StatelessWidget {
   void navigateToHome(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => const HomeScreen()),
+      MaterialPageRoute(builder: (ctx) => const HomeScreen()),
     );
   }
 
@@ -19,7 +19,7 @@ class LoginScreen extends StatelessWidget {
     String message;
 
     if (e is InvalidCredentialsException) {
-      message = 'Wrong email or password, please try .';
+      message = 'Wrong email or password, please try banner .';
     } else if (e is UserNotFoundException) {
       message = 'No user found for that email.';
     } else if (e is EmailAlreadyInUseException) {
@@ -65,6 +65,7 @@ class LoginScreen extends StatelessWidget {
 
       // Email login
       onEmailPasswordSubmit: (email, password) async {
+        if (!context.mounted) return;
         try {
           await ninja.signInWithEmail(email, password);
           navigateToHome(context);
@@ -78,6 +79,7 @@ class LoginScreen extends StatelessWidget {
 
       // Email signup
       onEmailPasswordSignUpSubmit: (email, password) async {
+        if (!context.mounted) return;
         try {
           await ninja.signUpWithEmail(email, password);
           navigateToHome(context);
@@ -90,6 +92,7 @@ class LoginScreen extends StatelessWidget {
 
       // Google login
       onGooglePressed: () async {
+        if (!context.mounted) return;
         try {
           await ninja.signInWithGoogle();
          navigateToHome(context);
@@ -102,6 +105,7 @@ class LoginScreen extends StatelessWidget {
 
       // Apple login
       onApplePressed: () async {
+        if (!context.mounted) return;
         try {
           await ninja.signInWithApple();
          navigateToHome(context);

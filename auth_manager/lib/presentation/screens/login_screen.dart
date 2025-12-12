@@ -1,12 +1,26 @@
+import 'package:auth_manager/main.dart';
 import 'package:auth_manager/presentation/screens/home_screen.dart';
 import 'package:auth_ninja_sdk/auth_ninja_sdk.dart';
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  void _navigateToHome() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (ctx) => const HomeScreen()),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // This returns our default log in screen with exceptions handled
     return AuthNinjaScreen(
       config: const AuthNinjaConfig(
         enableEmailAuth: true,
@@ -21,37 +35,19 @@ class LoginScreen extends StatelessWidget {
         logoheight: 200,
         logowidth: 100,
       ),
-
       onEmailLoginSuccess: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (ctx) => const HomeScreen()),
-        );
+        _navigateToHome();
       },
-
       onEmailSignUpSuccess: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (ctx) => const HomeScreen()),
-        );
+        _navigateToHome();
       },
       onGooglePressed: () async {
-        final ninja = AuthNinja.instance;
         await ninja.signInWithGoogle();
-
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (ctx) => const HomeScreen()),
-        );
+        _navigateToHome();
       },
       onApplePressed: () async {
-        final ninja = AuthNinja.instance;
         await ninja.signInWithApple();
-
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (ctx) => const HomeScreen()),
-        );
+        _navigateToHome();
       },
     );
   }

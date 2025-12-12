@@ -7,12 +7,10 @@ class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  State<SplashScreen> createState() =>
-      _SplashScreenState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   Future<void> _checkAuthAndNavigate() async {
     // Show splash for minimum 2 seconds
     await Future.delayed(const Duration(seconds: 2));
@@ -30,9 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
     } else {
       // User not logged in, show auth screen
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => const LoginScreen()
-        ),
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
       );
     }
   }
@@ -42,9 +38,6 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     _checkAuthAndNavigate();
   }
-
-  
-
   @override
   Widget build(BuildContext context) {
     return const Scaffold(

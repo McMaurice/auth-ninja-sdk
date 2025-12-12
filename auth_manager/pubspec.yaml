@@ -13,6 +13,11 @@ dependencies:
     sdk: flutter
   auth_ninja_sdk:
     path: ../
+
+  # auth_ninja_sdk: git: url: https://github.com/McMaurice/auth-ninja-sdk 
+  # ref: main
+
+
   flutter_riverpod: ^3.0.3
   cupertino_icons: ^1.0.2
   flutter_svg: ^2.1.1

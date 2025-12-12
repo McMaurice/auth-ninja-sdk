@@ -1,9 +1,50 @@
+import 'package:auth_manager/main.dart';
 import 'package:auth_manager/presentation/screens/home_screen.dart';
 import 'package:auth_ninja_sdk/auth_ninja_sdk.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
+
+
+  void navigateToHome(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const HomeScreen()),
+    );
+  }
+
+
+  void _showError(BuildContext context, AuthNinjaException e) {
+    String message;
+
+    if (e is InvalidCredentialsException) {
+      message = 'Wrong email or password, please try .';
+    } else if (e is UserNotFoundException) {
+      message = 'No user found for that email.';
+    } else if (e is EmailAlreadyInUseException) {
+      message = 'The email is already in use by another account.';
+    } else if (e is WeakPasswordException) {
+      message = 'Password is too weak.';
+    } else if (e is InvalidEmailException) {
+      message = 'The email address is not valid.';
+    } else if (e is NetworkException) {
+      message = 'No internet connection. Check your network.';
+    } else if (e is GoogleSignInCancelledException || e is AppleSignInCancelledException) {
+      message = 'Sign-in cancelled by user.';
+    } else {
+      message = e.message;
+    }
+
+
+  AuthNinjaErrorBanner.show(
+    context: context,
+    errorMessage: message,
+  );
+}
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -22,36 +63,53 @@ class LoginScreen extends StatelessWidget {
         logowidth: 100,
       ),
 
-      onEmailLoginSuccess: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (ctx) => const HomeScreen()),
-        );
+      // Email login
+      onEmailPasswordSubmit: (email, password) async {
+        try {
+          await ninja.signInWithEmail(email, password);
+          navigateToHome(context);
+        } 
+        on AuthNinjaException catch (e) {
+          _showError(context, e);
+        } catch (e) {
+          _showError(context, UnknownAuthException(e.toString()));
+        }
       },
 
-      onEmailSignUpSuccess: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (ctx) => const HomeScreen()),
-        );
+      // Email signup
+      onEmailPasswordSignUpSubmit: (email, password) async {
+        try {
+          await ninja.signUpWithEmail(email, password);
+          navigateToHome(context);
+        } on AuthNinjaException catch (e) {
+          _showError(context, e);
+        } catch (e) {
+          _showError(context, UnknownAuthException(e.toString()));
+        }
       },
+
+      // Google login
       onGooglePressed: () async {
-        final ninja = AuthNinja.instance;
-        await ninja.signInWithGoogle();
-
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (ctx) => const HomeScreen()),
-        );
+        try {
+          await ninja.signInWithGoogle();
+         navigateToHome(context);
+        } on AuthNinjaException catch (e) {
+          _showError(context, e);
+        } catch (e) {
+          _showError(context, UnknownAuthException(e.toString()));
+        }
       },
-      onApplePressed: () async {
-        final ninja = AuthNinja.instance;
-        await ninja.signInWithApple();
 
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (ctx) => const HomeScreen()),
-        );
+      // Apple login
+      onApplePressed: () async {
+        try {
+          await ninja.signInWithApple();
+         navigateToHome(context);
+        } on AuthNinjaException catch (e) {
+          _showError(context, e);
+        } catch (e) {
+          _showError(context, UnknownAuthException(e.toString()));
+        }
       },
     );
   }

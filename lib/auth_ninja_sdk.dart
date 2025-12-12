@@ -13,6 +13,8 @@ export 'src/domain/auth_ninja.dart';
 export 'src/presentation/auth_ninja_screen.dart';
 
 export 'src/core/auth_ninja_state.dart';
+export 'src/core/auth_ninja_exceptions.dart';
+export 'src/presentation/widgets/auth_ninja_error_banner.dart';
 
 
 /*

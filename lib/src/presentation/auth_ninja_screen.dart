@@ -10,6 +10,7 @@ import 'widgets/social_login_section.dart';
 class AuthNinjaScreen extends ConsumerStatefulWidget {
   final AuthNinjaConfig config;
   final Future<void> Function(String email, String password)? onEmailPasswordSubmit;
+  final Future<void> Function(String email, String password)? onEmailPasswordSignUpSubmit;
   final VoidCallback? onLoginSubmit;
   final VoidCallback? onSignupSubmit;
   final VoidCallback? onGooglePressed;
@@ -23,7 +24,13 @@ class AuthNinjaScreen extends ConsumerStatefulWidget {
     required this.config,
     this.onGooglePressed,
     this.onApplePressed,
-    this.onEmailPasswordSubmit, this.onLoginSubmit, this.onSignupSubmit, this.onSuccess, this.onEmailLoginSuccess, this.onEmailSignUpSuccess,
+    this.onEmailPasswordSubmit,
+    this.onLoginSubmit,
+    this.onSignupSubmit,
+    this.onSuccess,
+    this.onEmailLoginSuccess,
+    this.onEmailSignUpSuccess,
+    this.onEmailPasswordSignUpSubmit,
   });
 
   @override
@@ -36,15 +43,11 @@ class _AuthScreenState extends ConsumerState<AuthNinjaScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Watch the auth state - UI rebuilds when state changes
     final authState = ref.watch(authProvider);
-    // Get the notifier to call methods
     final authNotifier = ref.read(authProvider.notifier);
     
-    // Listen for successful authentication
     if (authState.status == AuthNinjaStatus.authenticated) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-       // Determine which callback to call based on mode
         if (_isLoginMode && widget.onEmailLoginSuccess != null) {
           widget.onEmailLoginSuccess!.call();
         } else if (!_isLoginMode && widget.onEmailSignUpSuccess != null) {
@@ -108,12 +111,34 @@ class _AuthScreenState extends ConsumerState<AuthNinjaScreen> {
                 // Email/Password Form
                 EmailPasswordForm(
                   isLoginMode: _isLoginMode,
-                  onSubmit: (email, password) async{
-                   
-                    if (_isLoginMode) {
-                      authNotifier.signInWithEmail(email, password);
-                    } else {
-                      authNotifier.signUpWithEmail(email, password);
+                  onSubmit: (email, password) async {
+                    try {
+                      if (_isLoginMode) {
+                        if (widget.onEmailPasswordSubmit != null) {
+                          await widget.onEmailPasswordSubmit!(email, password);
+                        } else {
+                          await authNotifier.signInWithEmail(email, password);
+                        }
+                      } else {
+                        if (widget.onEmailPasswordSignUpSubmit != null) {
+                          await widget.onEmailPasswordSignUpSubmit!(
+                            email,
+                            password,
+                          );
+                        } else {
+                          await authNotifier.signUpWithEmail(email, password);
+                        }
+                      }
+                    } catch (e) {
+                      // Only show error if using notifier fallback
+                      if (widget.onEmailPasswordSubmit == null &&
+                          widget.onEmailPasswordSignUpSubmit == null &&
+                          e is AuthNinjaException) {
+                        AuthNinjaErrorBanner.show(
+                          context: context,
+                          errorMessage: e.message,
+                        );
+                      }
                     }
                   },
                   emailHint: widget.config.emailHint,
@@ -124,7 +149,7 @@ class _AuthScreenState extends ConsumerState<AuthNinjaScreen> {
                   buttonColor: widget.config.primaryColor ?? Colors.amberAccent,
                   buttonBorderRadius: 40,
                   fieldBorderRadius: 40,
-                  isLoading: authState.isLoading,
+                  isLoading: false, // or use authState.isLoading if you want
                 ),
 
                 const SizedBox(height: 24),
@@ -137,12 +162,12 @@ class _AuthScreenState extends ConsumerState<AuthNinjaScreen> {
 
                   SocialLoginSection(
                     onApplePressed: widget.config.enableAppleAuth
-                        ? () => authNotifier.signInWithApple()
+                        ? widget.onApplePressed
                         : null,
                     onGooglePressed: widget.config.enableGoogleAuth
-                        ? () => authNotifier.signInWithGoogle()
+                        ? widget.onGooglePressed
                         : null,
-                    isLoading: authState.isLoading,
+                    isLoading: false, // remove notifier dependency
                   ),
                 ],
                 const SizedBox(height: 10),

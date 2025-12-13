@@ -1,7 +1,7 @@
 name: auth_ninja_sdk
 description: "A modular Firebase authentication SDK with pre-built UI and headless mode"
 version: 0.0.1
-homepage:
+homepage: https://github.com/McMaurice/auth-ninja-sdk
 
 environment:
  sdk: '>=3.10.0 <4.0.0'
@@ -23,10 +23,10 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^6.0.0
 
-dependency_overrides:
-  flutter_facebook_auth:
-    macos:
-      default_package: none
+# dependency_overrides:
+#   flutter_facebook_auth:
+#     macos:
+#       default_package: none
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

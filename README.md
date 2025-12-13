@@ -25,15 +25,7 @@ A flexible Flutter authentication SDK for Firebase projects. You use it with the
 # Installation
 
 dependencies:
-auth_ninja_sdk:
-    path: ../
-    
-or from git hub
-
-  auth_ninja_sdk:
-    git:
-      url: https://github.com/McMaurice/auth-ninja-sdk
-      ref: main 
+auth_ninja_sdk: ^0.0.1
       
   auth_ninja_sdk: ^1.0.0
   firebase_core: ^3.0.0

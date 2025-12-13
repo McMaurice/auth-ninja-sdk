@@ -2,6 +2,8 @@
 
 A flexible Flutter authentication SDK for Firebase projects. You use it with the built-in UI or your own UI. The SDK supports email and password, Google, Apple, and Facebook sign-in. It offers strong typing, token refresh, clear errors, and reactive state.
 
+https://pub.dev/packages/auth_ninja_sdk
+
 ---
 
 # Preview Image

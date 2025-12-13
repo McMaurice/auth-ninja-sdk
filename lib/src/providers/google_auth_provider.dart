@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:google_sign_in/google_sign_in.dart';
 
 class GoogleAuthProvider {
- // static const String _webClientId = '18554660222-avvlcrt6l52d671nbaltq9moat54ltmp.apps.googleusercontent.com';
   
   final firebase_auth.FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;

@@ -44,9 +44,10 @@ packages:
   auth_ninja_sdk:
     dependency: "direct main"
     description:
-      path: ".."
-      relative: true
-    source: path
+      name: auth_ninja_sdk
+      sha256: a18dcfab0c65e15cd6c7effe155bb62fcff52fe41d3c6863bb418751ef197093
+      url: "https://pub.dev"
+    source: hosted
     version: "0.0.1"
   boolean_selector:
     dependency: transitive

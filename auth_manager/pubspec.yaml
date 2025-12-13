@@ -11,8 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  auth_ninja_sdk:
-    path: ../
+  auth_ninja_sdk: ^0.0.1
   flutter_riverpod: ^3.0.3
   cupertino_icons: ^1.0.2
   flutter_svg: ^2.1.1

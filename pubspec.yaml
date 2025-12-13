@@ -1,7 +1,8 @@
 name: auth_ninja_sdk
 description: "A modular Firebase authentication SDK with pre-built UI and headless mode"
 version: 0.0.1
-homepage: https://github.com/McMaurice/auth-ninja-sdk
+homepage: https://pub.dev/packages/auth_ninja_sdk
+repository: https://github.com/McMaurice/auth-ninja-sdk
 
 environment:
  sdk: '>=3.10.0 <4.0.0'

@@ -1,0 +1,10 @@
+auth_manager/
+**/google-services.json
+**/GoogleService-Info.plist
+**/firebase_options.dart
+**/*.keystore
+**/*.jks
+**/key.properties
+.dart_tool/
+build/
+.git/
